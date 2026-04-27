@@ -1,4 +1,4 @@
-package boletin01.EJ01.Main;
+package boletin01.EJ02.Main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,36 +6,30 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-    	// Inicializar contadores a 0 
         double suma = 0;
         int contador = 0;
 
-        //Intenta leer el archivo 
-        try (Scanner sc = new Scanner(new File("src/boletin01/EJ01/Main/NumerosReales.txt" ))) {
-        	//Si lo logra ejecuta un bucle por cada numero encontrado 
+        try (Scanner sc = new Scanner(new File("src/boletin01/EJ02/Numeros/Numeros.txt" ))) {
             while (sc.hasNextDouble()) {
                 double numero = sc.nextDouble();
                 suma += numero;
                 contador++;
             }
 
-            //Si encuentra números válidos imprime resultados 
             if (contador > 0) {
                 double media = suma / contador;
                 System.out.println("Suma: " + suma);
                 System.out.println("Media: " + media);
+                System.out.println(contador);
             } else {
                 System.out.println("El fichero no contiene números reales válidos.");
             }
 
-            //Si el archivo no se encuentra por una ruta incorrecta 
         } catch (FileNotFoundException e) {
             System.out.println("No se encontró el fichero NumerosReales.txt");
         }
     }
     /*
-     * 1. Se prueba encontrar el archivo, en caso de no encontrarlo se ejecuta la excepción 
-     * 2. No ejecuta IOException ya que se recoge de otra forma 
-     * 3. Comprueba el contenido del archivo 
+     * Cambio de ruta. EJ02 = EJ01 
      */
 }

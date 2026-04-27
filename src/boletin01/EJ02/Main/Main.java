@@ -6,12 +6,12 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        double suma = 0;
+        int suma = 0;
         int contador = 0;
 
         try (Scanner sc = new Scanner(new File("src/boletin01/EJ02/Numeros/Numeros.txt" ))) {
-            while (sc.hasNextDouble()) {
-                double numero = sc.nextDouble();
+            while (sc.hasNextInt()) {
+                double numero = sc.nextInt();
                 suma += numero;
                 contador++;
             }
@@ -30,6 +30,6 @@ public class Main {
         }
     }
     /*
-     * Cambio de ruta. EJ02 = EJ01 
+     * Cambio de ruta. EJ02 = EJ01 . + Cambios doble a int. 
      */
 }

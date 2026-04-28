@@ -20,10 +20,16 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new FileReader(RUTA_CODEC)); 
         		Scanner sc = new Scanner(System.in);){
         	Map<Character, Character> codec = new HashMap<>();
-        	String linea; 
-        	while ((linea = br.readLine()) != null) {
-        		String[] letras = linea.trim().split("\\s+");
-        		
+            String lineaAlfabeto = br.readLine(); 
+            String lineaCifrado = br.readLine();  
+            
+            if (lineaAlfabeto != null && lineaCifrado != null) {
+                String letrasOriginales = lineaAlfabeto.split(":")[1].replace(" ", "");
+                String letrasCifradas = lineaCifrado.split(":")[1].replace(" ", "");
+                
+                for (int i = 0; i < letrasOriginales.length(); i++) {
+                    codec.put(letrasOriginales.charAt(i), letrasCifradas.charAt(i));
+                }
         	}
         	System.out.println("Saliendo...");
         } catch (IOException e) {

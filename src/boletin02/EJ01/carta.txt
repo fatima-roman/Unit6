@@ -1,0 +1,3 @@
+Hola, este es un fichero de prueba.
+Tiene varias líneas para contar.
+Cada palabra debe estar separada por espacios o saltos de línea.

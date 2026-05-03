@@ -4,39 +4,60 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    private static final String RUTA_MENSAJE = "src/boletin02/EJ04/mensaje.txt";
+    private static final String RUTA_ENTRADA = "src/boletin02/EJ04/mensaje.txt";
     private static final String RUTA_CODEC = "src/boletin02/EJ04/codec.txt";
+    private static final String RUTA_SALIDA = "src/boletin02/EJ04/mensaje_cifrado.txt";
 
-    /*
-     * Carga inicial: Al arrancar el programa, lee codec.txt y almacena la relación en un HashMap<Character, Character> 
-     * 	o un array de tamaño 26 (donde el índice es la letra original y el valor la cifrada).
-     * Procesamiento: Lee el archivo de texto original (mensaje.txt) carácter a carácter o línea a línea.
-     * Sustitución: Por cada carácter leído:
-     * Si es una letra, busca su equivalente en tu estructura (Map o array) y escríbelo en el fichero de salida.
-     * Si es un espacio, tabulación o signo de puntuación, mantenlo tal cual (o según indique tu profesor).
-     * Escritura: Usa un BufferedWriter para volcar el resultado en un nuevo archivo (ej. mensaje_cifrado.txt).
-     */
     public static void main(String[] args) {
-        try (BufferedReader br = new BufferedReader(new FileReader(RUTA_CODEC)); 
-        		Scanner sc = new Scanner(System.in);){
-        	Map<Character, Character> codec = new HashMap<>();
-            String lineaAlfabeto = br.readLine(); 
-            String lineaCifrado = br.readLine();  
-            
-            if (lineaAlfabeto != null && lineaCifrado != null) {
-                String letrasOriginales = lineaAlfabeto.split(":")[1].replace(" ", "");
-                String letrasCifradas = lineaCifrado.split(":")[1].replace(" ", "");
-                
-                for (int i = 0; i < letrasOriginales.length(); i++) {
-                    codec.put(letrasOriginales.charAt(i), letrasCifradas.charAt(i));
+        Map<Character, Character> mapaCifrado = new HashMap<>();
+
+        try (
+            BufferedReader brCodec = new BufferedReader(new FileReader(RUTA_CODEC));
+            BufferedReader brTexto = new BufferedReader(new FileReader(RUTA_ENTRADA));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(RUTA_SALIDA))
+        ) {
+            String alfabeto = brCodec.readLine();
+            String cifrado = brCodec.readLine();
+
+            if (alfabeto == null || cifrado == null) {
+                throw new IOException("El fichero codec.txt no tiene el formato correcto.");
+            }
+
+            alfabeto = alfabeto.replace(" ", "").toLowerCase();
+            cifrado = cifrado.replace(" ", "").toLowerCase();
+
+            if (alfabeto.length() != cifrado.length()) {
+                throw new IOException("El alfabeto y el cifrado no tienen la misma longitud.");
+            }
+
+            for (int i = 0; i < alfabeto.length(); i++) {
+                mapaCifrado.put(alfabeto.charAt(i), cifrado.charAt(i));
+            }
+
+            int c;
+            while ((c = brTexto.read()) != -1) {
+                char caracter = (char) c;
+                char minuscula = Character.toLowerCase(caracter);
+
+                if (mapaCifrado.containsKey(minuscula)) {
+                    char cifradoChar = mapaCifrado.get(minuscula);
+
+                    if (Character.isUpperCase(caracter)) {
+                        bw.write(Character.toUpperCase(cifradoChar));
+                    } else {
+                        bw.write(cifradoChar);
+                    }
+                } else {
+                    bw.write(caracter);
                 }
-        	}
-        	System.out.println("Saliendo...");
+            }
+
+            System.out.println("Archivo cifrado generado correctamente en: " + RUTA_SALIDA);
+
         } catch (IOException e) {
             System.err.println("Error al procesar el archivo: " + e.getMessage());
         } catch (Exception e) {
-        	System.out.println("Error");
+            System.out.println("Error");
         }
     }
-
 }
